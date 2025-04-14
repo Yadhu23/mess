@@ -14,29 +14,21 @@ export const authOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "email" },
-        password: { label: "Password", type: "password", placeholder: "password" },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Missing fields");
-        }
+        if (!credentials?.email || !credentials?.password) throw new Error("Missing fields");
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
           select: { id: true, name: true, email: true, password: true },
         });
 
-        if (!user) {
-          throw new Error("User not found");
-        }
+        if (!user) throw new Error("User not found");
+        if (!await bcrypt.compare(credentials.password, user.password)) throw new Error("Incorrect password");
 
-        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-        if (!isValidPassword) {
-          throw new Error("Incorrect password");
-        }
-
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email, image: user.image };
       },
     }),
   ],
@@ -44,60 +36,57 @@ export const authOptions = {
   session: { strategy: "jwt" },
   callbacks: {
     async signIn({ user, account, profile }) {
-      if (account?.provider === "github") {
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email },
-          include: { accounts: true },
-        });
+      if (account?.provider !== "github") return true;
 
-        if (existingUser) {
-          const githubLinked = existingUser.accounts?.some(
-            (acc) => acc.provider === "github"
-          );
+      const existingUser = await prisma.user.findUnique({
+        where: { email: user.email },
+        include: { accounts: true },
+      });
 
-          if (!githubLinked) {
-            await prisma.account.create({
-              data: {
-                userId: existingUser.id,
-                type: account.type,
-                provider: account.provider,
-                providerAccountId: account.providerAccountId,
-                access_token: account.access_token,
-                refresh_token: account.refresh_token,
-                expires_at: account.expires_at,
-                token_type: account.token_type,
-                scope: account.scope,
-                id_token: account.id_token,
-                session_state: account.session_state,
-              },
-            });
-            user.id = existingUser.id;
-          }
-        } else {
-          await prisma.user.create({
+      if (existingUser) {
+        if (!existingUser.accounts.some((acc) => acc.provider === "github")) {
+          await prisma.account.create({
             data: {
-              name: profile?.name || profile?.login || "GitHub User",
-              email: user.email,
-              image: user.image,
-              accounts: {
-                create: {
-                  type: account.type,
-                  provider: account.provider,
-                  providerAccountId: account.providerAccountId,
-                  access_token: account.access_token,
-                  refresh_token: account.refresh_token,
-                  expires_at: account.expires_at,
-                  token_type: account.token_type,
-                  scope: account.scope,
-                  id_token: account.id_token,
-                  session_state: account.session_state,
-                },
-              },
+              userId: existingUser.id,
+              type: account.type,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              refresh_token: account.refresh_token,
+              expires_at: account.expires_at,
+              token_type: account.token_type,
+              scope: account.scope,
+              id_token: account.id_token,
+              session_state: account.session_state,
             },
           });
         }
+        user.id = existingUser.id;
+        user.image = existingUser.image || profile?.avatar_url;
+        return true;
       }
 
+      await prisma.user.create({
+        data: {
+          name: profile?.name || profile?.login || "GitHub User",
+          email: user.email,
+          image: profile?.avatar_url,
+          accounts: {
+            create: {
+              type: account.type,
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              refresh_token: account.refresh_token,
+              expires_at: account.expires_at,
+              token_type: account.token_type,
+              scope: account.scope,
+              id_token: account.id_token,
+              session_state: account.session_state,
+            },
+          },
+        },
+      });
       return true;
     },
     async jwt({ token, user }) {
@@ -105,23 +94,24 @@ export const authOptions = {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
+        token.image = user.image;
       }
-      return token || {}; // Ensure token is never undefined
+      return token || {};
     },
     async session({ session, token }) {
       if (token) {
         session.id = token.id;
         session.name = token.name;
         session.email = token.email;
+        session.user = { image: token.image };
       }
-      console.log("Session:", session);
-      return session || {}; // Ensure session is never undefined
+      // Remove or comment out this line
+      // console.log("Session:", session);
+      return session || {};
     },
   },
-  secret: process.env.NEXTAUTH_SECRET, // Corrected to NEXTAUTH_SECRET
-  pages: {
-    signIn: "/auth/login",
-  },
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: { signIn: "/auth/login" },
 };
 
 const handler = NextAuth(authOptions);
