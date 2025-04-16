@@ -47,11 +47,11 @@ export default function RegisterPage() {
       className="relative min-h-screen bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage:
-          "linear-gradient(45deg, #f4c542, #f9d849, #f4c542, #f9d849)",
+          "linear-gradient(45deg, #8b5cf6, #a78bfa, #8b5cf6, #a78bfa)",
         animation: "gradientAnimation 5s ease infinite",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-beige-100/80 to-beige-200/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/80 to-purple-600/80" />
 
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
         <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between gap-12">
@@ -81,7 +81,8 @@ export default function RegisterPage() {
           </div>
 
           <div className="w-full md:w-1/2 bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl">
-            <h2 className="text-4xl font-bold text-orange-600 mb-4 text-center">
+            {/* Change heading to black */}
+            <h2 className="text-4xl font-bold text-black mb-4 text-center">
               Join the Feast!
             </h2>
             <p className="text-sm text-gray-700 mb-6 text-center">
@@ -108,7 +109,7 @@ export default function RegisterPage() {
                   placeholder="Your Username"
                   value={form.username}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                   required
                 />
               </div>
@@ -128,7 +129,7 @@ export default function RegisterPage() {
                   placeholder="Your Email"
                   value={form.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                   required
                 />
               </div>
@@ -148,7 +149,7 @@ export default function RegisterPage() {
                   placeholder="Password"
                   value={form.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                   required
                 />
               </div>
@@ -168,14 +169,14 @@ export default function RegisterPage() {
                   placeholder="Confirm Password"
                   value={form.confirmPassword}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
+                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-orange-500 text-white py-2 rounded-md hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 transition font-semibold"
+                className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition font-semibold"
               >
                 Register
               </button>
@@ -193,11 +194,11 @@ export default function RegisterPage() {
 
             <p className="text-xs text-gray-600 text-center mt-2">
               By registering, you agree to our{" "}
-              <a href="#" className="text-orange-500 hover:text-orange-400">
+              <a href="#" className="text-purple-500 hover:text-purple-400">
                 Terms of Service
               </a>{" "}
               &{" "}
-              <a href="#" className="text-orange-500 hover:text-orange-400">
+              <a href="#" className="text-purple-500 hover:text-purple-400">
                 Privacy Policy
               </a>
             </p>
