@@ -2,6 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Heart } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -44,181 +55,142 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center bg-no-repeat"
+      className="min-h-screen flex flex-col items-center justify-center px-4 relative"
       style={{
-        backgroundImage:
-          "linear-gradient(45deg, #8b5cf6, #a78bfa, #8b5cf6, #a78bfa)",
-        animation: "gradientAnimation 5s ease infinite",
+        backgroundImage: `url('/watercolour-bg.jpg')`, // Full-page watercolor background
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/80 to-purple-600/80" />
-
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
-        <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="relative">
-              <img
-                src="/food1.jpg"
-                alt="Delicious Dish"
-                className="w-48 h-48 object-cover rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute -top-6 -left-6 w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs">
-                △
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              <img
-                src="/food2.jpg"
-                alt="Appetizer"
-                className="w-40 h-40 object-cover rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300"
-              />
-              <img
-                src="/food3.jpg"
-                alt="Dessert"
-                className="w-40 h-40 object-cover rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300"
-              />
-            </div>
-          </div>
-
-          <div className="w-full md:w-1/2 bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-xl">
-            {/* Change heading to black */}
-            <h2 className="text-4xl font-bold text-black mb-4 text-center">
-              Join the Feast!
-            </h2>
-            <p className="text-sm text-gray-700 mb-6 text-center">
-              Create an account to start exploring.
-            </p>
-
-            {errorMessage && (
-              <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Username */}
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Your Username"
-                  value={form.username}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-                  required
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-                  required
-                />
-              </div>
-
-              {/* Password */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-                  required
-                />
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-white/20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 transition font-semibold"
-              >
-                Register
-              </button>
-            </form>
-
-            <p className="text-center mt-4 text-gray-700">
-              Already have an account?{" "}
-              <button
-                onClick={() => router.push("/auth/login")}
-                className="text-blue-500 hover:text-blue-400"
-              >
-                Log In
-              </button>
-            </p>
-
-            <p className="text-xs text-gray-600 text-center mt-2">
-              By registering, you agree to our{" "}
-              <a href="#" className="text-purple-500 hover:text-purple-400">
-                Terms of Service
-              </a>{" "}
-              &{" "}
-              <a href="#" className="text-purple-500 hover:text-purple-400">
-                Privacy Policy
-              </a>
-            </p>
-          </div>
-        </div>
+      {/* FoodShare top left */}
+      <div className="absolute top-4 left-4 flex items-center gap-2 z-10">
+        <Heart className="h-6 w-6 text-purple-600" />
+        <span className="text-xl font-bold text-purple-700">FoodShare</span>
       </div>
 
-      <style jsx>{`
-        @keyframes gradientAnimation {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-      `}</style>
+      {/* Register Card */}
+      <Card
+        className="w-full max-w-md p-6 shadow-xl rounded-2xl relative z-10"
+        style={{
+          backgroundImage: `url('/pexels-artempodrez-7233109.jpg')`, // Card background from LoginPage
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-purple-800/40 rounded-2xl"></div> {/* Overlay from LoginPage */}
+
+        <CardHeader className="relative z-10">
+          <CardTitle className="text-3xl text-white text-center">
+            Join the Feast!
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="relative z-10">
+          <p className="text-sm text-white/90 mb-6 text-center">
+            Create an account to start exploring.
+          </p>
+
+          {errorMessage && (
+            <div className="text-red-300 text-sm mb-4 text-center">{errorMessage}</div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="username" className="block text-sm font-medium text-white">
+                Username
+              </Label>
+              <Input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Your Username"
+                value={form.username}
+                onChange={handleChange}
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="email" className="block text-sm font-medium text-white">
+                Email
+              </Label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={handleChange}
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="password" className="block text-sm font-medium text-white">
+                Password
+              </Label>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="confirmPassword" className="block text-sm font-medium text-white">
+                Confirm Password
+              </Label>
+              <Input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
+                required
+              />
+            </div>
+
+            <Button
+              type="submit"
+              className="w-full bg-white text-purple-700 hover:bg-gray-100"
+            >
+              Register
+            </Button>
+          </form>
+
+          <p className="text-center mt-4 text-white/90">
+            Already have an account?{" "}
+            <button
+              onClick={() => router.push("/auth/login")}
+              className="text-blue-200 hover:text-blue-100"
+            >
+              Log In
+            </button>
+          </p>
+
+          <p className="text-xs text-white/80 text-center mt-2">
+            By registering, you agree to our{" "}
+            <a href="#" className="text-white hover:underline">
+              Terms of Service
+            </a>{" "}
+            &{" "}
+            <a href="#" className="text-white hover:underline">
+              Privacy Policy
+            </a>
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

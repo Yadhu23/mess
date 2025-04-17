@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Heart } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -40,25 +41,51 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 via-purple-600 to-purple-500 animate-[gradientAnimation_10s_infinite]">
-      <Card className="w-full max-w-md p-6 backdrop-blur-md bg-white/60 shadow-xl rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-3xl text-purple-600 text-center">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center px-4 relative"
+      style={{
+        backgroundImage: `url('/watercolour-bg.jpg')`, // Restored full-page background
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* FoodShare top left */}
+      <div className="absolute top-4 left-4 flex items-center gap-2 z-10">
+        <Heart className="h-6 w-6 text-purple-600" />
+        <span className="text-xl font-bold text-purple-700">FoodShare</span>
+      </div>
+
+      {/* Login Card */}
+      <Card
+        className="w-full max-w-md p-6 shadow-xl rounded-2xl relative z-10"
+        style={{
+          backgroundImage: `url('/pexels-artempodrez-7233109.jpg')`, // Card background
+          backgroundSize: 'cover', // Enlarged to fit the card
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-purple-800/40 rounded-2xl"></div> {/* Overlay for contrast */}
+
+        <CardHeader className="relative z-10">
+          <CardTitle className="text-3xl text-white text-center">
             Craving Something?
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-700 mb-4 text-center">
+
+        <CardContent className="relative z-10">
+          <p className="text-sm mb-4 text-center text-white/90">
             Let’s get you started! Log in to explore.
           </p>
 
           {errorMessage && (
-            <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+            <div className="text-red-300 text-sm mb-4">{errorMessage}</div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-white">Email</Label>
               <Input
                 type="email"
                 name="email"
@@ -66,11 +93,12 @@ export default function LoginPage() {
                 value={form.email}
                 onChange={handleChange}
                 required
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
               />
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-white">Password</Label>
               <Input
                 type="password"
                 name="password"
@@ -78,19 +106,20 @@ export default function LoginPage() {
                 value={form.password}
                 onChange={handleChange}
                 required
+                className="bg-white/20 backdrop-blur-md text-white placeholder-white/80"
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between text-white">
               <Label className="flex items-center gap-2 text-sm">
-                <Checkbox /> Remember Me
+                <Checkbox className="bg-white" /> Remember Me
               </Label>
-              <a href="#" className="text-sm text-purple-500 hover:underline">
+              <a href="#" className="text-sm text-white hover:underline">
                 Forgot Password?
               </a>
             </div>
 
-            <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700">
+            <Button type="submit" className="w-full bg-white text-purple-700 hover:bg-gray-100">
               Sign In
             </Button>
           </form>
@@ -98,50 +127,35 @@ export default function LoginPage() {
           <div className="mt-4">
             <Button
               variant="secondary"
-              className="w-full bg-purple-800 text-white hover:bg-purple-900"
+              className="w-full bg-white text-purple-800 hover:bg-gray-100"
               onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
             >
               Sign in with GitHub
             </Button>
           </div>
 
-          <p className="text-center mt-4 text-sm">
+          <p className="text-center mt-4 text-sm text-white/90">
             Don’t have an account?{" "}
             <button
               onClick={() => router.push("/auth/register")}
-              className="text-blue-500 hover:underline"
+              className="text-blue-200 hover:underline"
             >
               Register Now
             </button>
           </p>
 
-          <p className="text-xs text-center text-gray-600 mt-2">
+          <p className="text-xs text-center text-white/80 mt-2">
             By signing in, you agree to our{" "}
-            <a href="#" className="text-purple-500 hover:underline">
+            <a href="#" className="text-white hover:underline">
               Terms of Service
             </a>{" "}
             &{" "}
-            <a href="#" className="text-purple-500 hover:underline">
+            <a href="#" className="text-white hover:underline">
               Privacy Policy
             </a>
           </p>
         </CardContent>
       </Card>
-
-      {/* Gradient animation styles */}
-      <style jsx>{`
-        @keyframes gradientAnimation {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-      `}</style>
     </div>
   );
 }
